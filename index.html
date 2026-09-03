@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Wanstead Line — Secondary Transfer Guide 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<style>
+  :root{
+    --paper:#F6F1E3;
+    --paper-dim:#EDE6D3;
+    --ink:#1C2B4A;
+    --ink-soft:#425073;
+    --state:#7A2632;      /* burgundy — Wanstead High uniform colour */
+    --state-tint:#F3E1E1;
+    --grammar:#9C7A2E;    /* brass gold */
+    --grammar-tint:#F1E7CC;
+    --private:#2F4B3C;    /* forest green */
+    --private-tint:#DEE7DD;
+    --line:#1C2B4A;
+    --rule:rgba(28,43,74,0.14);
+    --shadow: 0 10px 30px rgba(28,43,74,0.14);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(28,43,74,0.06) 1px, transparent 0);
+    background-size: 22px 22px;
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{max-width:1120px; margin:0 auto; padding:0 24px;}
+
+  /* ---------- HERO ---------- */
+  header.hero{
+    padding:64px 0 40px;
+    border-bottom:1px solid var(--rule);
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
+  }
+  .eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--state);display:inline-block;}
+  h1.title{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:clamp(34px, 5.6vw, 60px);
+    line-height:1.02;
+    margin:0 0 18px;
+    letter-spacing:-0.01em;
+  }
+  h1.title em{
+    font-style:italic;
+    font-weight:400;
+    color:var(--state);
+  }
+  .lede{
+    font-size:18px;
+    line-height:1.6;
+    color:var(--ink-soft);
+    max-width:640px;
+    margin:0 0 28px;
+  }
+  .hero-stats{
+    display:flex;
+    flex-wrap:wrap;
+    gap:0;
+    border-top:1px solid var(--rule);
+  }
+  .hero-stat{
+    flex:1 1 160px;
+    padding:18px 20px 0;
+    border-right:1px solid var(--rule);
+  }
+  .hero-stat:last-child{border-right:none;}
+  .hero-stat .num{
+    font-family:'Fraunces', serif;
+    font-size:26px;
+    font-weight:600;
+  }
+  .hero-stat .lab{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:var(--ink-soft);
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    margin-top:2px;
+  }
+
+  section{padding:56px 0;}
+  h2.section-title{
+    font-family:'Fraunces', serif;
+    font-size:clamp(24px,3vw,32px);
+    font-weight:600;
+    margin:0 0 6px;
+  }
+  .section-sub{
+    color:var(--ink-soft);
+    font-size:15px;
+    max-width:640px;
+    margin:0 0 36px;
+    line-height:1.55;
+  }
+
+  /* ---------- TIMELINE ("THE LINE") ---------- */
+  #timeline{border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); background:var(--paper-dim);}
+  .legend{display:flex; gap:22px; flex-wrap:wrap; margin-bottom:34px; font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--ink-soft);}
+  .legend span{display:inline-flex; align-items:center; gap:7px;}
+  .swatch{width:11px;height:11px;border-radius:50%;display:inline-block;}
+  .swatch.state{background:var(--state);}
+  .swatch.grammar{background:var(--grammar);}
+  .swatch.private{background:var(--private);}
+  .swatch.deadline{background:var(--ink); border-radius:2px;}
+
+  .line-track{
+    position:relative;
+    padding-left:28px;
+    border-left:3px solid var(--line);
+  }
+  .month-block{margin-bottom:38px; position:relative;}
+  .month-label{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:20px;
+    margin:0 0 16px;
+    position:relative;
+  }
+  .month-label::before{
+    content:'';
+    position:absolute;
+    left:-40px;
+    top:6px;
+    width:14px;
+    height:14px;
+    border-radius:50%;
+    background:var(--paper-dim);
+    border:3px solid var(--ink);
+  }
+  .station{
+    display:grid;
+    grid-template-columns:96px 1fr;
+    gap:16px;
+    align-items:start;
+    padding:12px 14px;
+    border-radius:10px;
+    margin-bottom:6px;
+    position:relative;
+    transition:background .15s ease;
+  }
+  .station:hover{background:rgba(28,43,74,0.05);}
+  .station::before{
+    content:'';
+    position:absolute;
+    left:-33px;
+    top:19px;
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    background:var(--ink);
+  }
+  .station.state::before{background:var(--state);}
+  .station.grammar::before{background:var(--grammar);}
+  .station.private::before{background:var(--private);}
+  .station.deadline::before{border-radius:2px; background:var(--ink); transform:rotate(45deg); width:8px; height:8px;}
+  .st-date{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    padding-top:2px;
+  }
+  .st-body .st-title{font-weight:600; font-size:15px;}
+  .st-body .st-desc{font-size:13.5px; color:var(--ink-soft); margin-top:2px; line-height:1.45;}
+  .tag{
+    display:inline-block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    padding:2px 7px;
+    border-radius:20px;
+    margin-left:8px;
+    position:relative;
+    top:-1px;
+  }
+  .tag.state{background:var(--state-tint); color:var(--state);}
+  .tag.grammar{background:var(--grammar-tint); color:var(--grammar);}
+  .tag.private{background:var(--private-tint); color:var(--private);}
+  .tag.deadline{background:#E5E1D3; color:var(--ink);}
+
+  /* ---------- SCHOOL DIRECTORY ---------- */
+  .cat-heading{
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+    margin:0 0 4px;
+  }
+  .cat-heading h3{
+    font-family:'Fraunces', serif;
+    font-size:22px;
+    font-weight:600;
+    margin:0;
+  }
+  .cat-count{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+  }
+  .cat-block{margin-bottom:46px;}
+  .cat-rule{height:3px; width:52px; margin:10px 0 22px; border-radius:2px;}
+  .cat-rule.state{background:var(--state);}
+  .cat-rule.grammar{background:var(--grammar);}
+  .cat-rule.private{background:var(--private);}
+
+  .card-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(260px,1fr));
+    gap:16px;
+  }
+  .card{
+    background:#fff;
+    border:1px solid var(--rule);
+    border-radius:14px;
+    padding:20px;
+    cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease;
+    position:relative;
+    overflow:hidden;
+  }
+  .card::after{
+    content:'';
+    position:absolute; top:0; left:0; height:100%; width:4px;
+  }
+  .card.state::after{background:var(--state);}
+  .card.grammar::after{background:var(--grammar);}
+  .card.private::after{background:var(--private);}
+  .card:hover{transform:translateY(-3px); box-shadow:var(--shadow);}
+  .card h4{
+    font-family:'Fraunces', serif;
+    font-size:18px;
+    font-weight:600;
+    margin:0 0 6px;
+    padding-left:6px;
+  }
+  .card .meta{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    padding-left:6px;
+    line-height:1.5;
+  }
+  .card .ofsted-chip{
+    display:inline-block;
+    margin-top:10px;
+    margin-left:6px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    padding:3px 9px;
+    border-radius:20px;
+    background:var(--paper-dim);
+    color:var(--ink);
+  }
+  .card .tap-hint{
+    position:absolute;
+    right:16px;
+    bottom:14px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    color:var(--ink-soft);
+    opacity:.7;
+  }
+
+  /* ---------- MODAL ---------- */
+  .overlay{
+    position:fixed; inset:0;
+    background:rgba(20,26,42,0.55);
+    backdrop-filter:blur(2px);
+    display:none;
+    align-items:flex-start;
+    justify-content:center;
+    padding:5vh 20px;
+    z-index:50;
+    overflow-y:auto;
+  }
+  .overlay.open{display:flex;}
+  .modal{
+    background:var(--paper);
+    max-width:640px;
+    width:100%;
+    border-radius:18px;
+    box-shadow:0 30px 60px rgba(0,0,0,0.35);
+    padding:0;
+    position:relative;
+    animation:pop .18s ease;
+  }
+  @keyframes pop{from{opacity:0; transform:translateY(10px) scale(.98);} to{opacity:1; transform:none;}}
+  .modal-head{
+    padding:28px 30px 20px;
+    border-bottom:1px solid var(--rule);
+    position:relative;
+  }
+  .modal-head::before{
+    content:'';
+    position:absolute; top:0; left:0; height:6px; width:100%;
+    border-radius:18px 18px 0 0;
+  }
+  .modal-head.state::before{background:var(--state);}
+  .modal-head.grammar::before{background:var(--grammar);}
+  .modal-head.private::before{background:var(--private);}
+  .modal-close{
+    position:absolute; top:20px; right:22px;
+    background:none; border:none; font-size:22px; line-height:1;
+    cursor:pointer; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace;
+    padding:4px 8px; border-radius:8px;
+  }
+  .modal-close:hover{background:var(--paper-dim); color:var(--ink);}
+  .modal-head h3{
+    font-family:'Fraunces', serif;
+    font-size:26px;
+    font-weight:600;
+    margin:4px 0 8px;
+    padding-right:36px;
+  }
+  .modal-head .sub{font-size:13.5px; color:var(--ink-soft);}
+  .modal-body{padding:22px 30px 30px;}
+  .field{margin-bottom:18px;}
+  .field .flabel{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:var(--ink-soft);
+    margin-bottom:5px;
+  }
+  .field .fval{font-size:14.5px; line-height:1.55;}
+  .field .fval strong{color:var(--ink);}
+  .field.two-col{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+  .badge-row{display:flex; gap:8px; flex-wrap:wrap; margin-top:2px;}
+  .badge{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    padding:3px 9px;
+    border-radius:20px;
+    background:var(--paper-dim);
+  }
+
+  /* ---------- PREP TIMELINE ---------- */
+  #prep{background:var(--paper-dim); border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);}
+  .prep-alert{
+    background:#fff;
+    border:1px solid var(--state);
+    border-left:4px solid var(--state);
+    border-radius:10px;
+    padding:16px 20px;
+    margin-bottom:30px;
+    font-size:14px;
+    line-height:1.55;
+  }
+  .prep-alert strong{color:var(--state);}
+  .prep-grid{display:flex; flex-direction:column; gap:0;}
+  .prep-row{
+    display:grid;
+    grid-template-columns:150px 1fr;
+    gap:20px;
+    padding:20px 0;
+    border-bottom:1px solid var(--rule);
+  }
+  .prep-row:last-child{border-bottom:none;}
+  .prep-when{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    padding-top:2px;
+  }
+  .prep-when .prep-when-main{font-weight:600; color:var(--ink); font-size:13.5px; display:block; margin-bottom:2px;}
+  .prep-content h4{font-family:'Fraunces', serif; font-size:17px; font-weight:600; margin:0 0 8px;}
+  .prep-content p{font-size:14px; line-height:1.6; color:var(--ink-soft); margin:0 0 8px;}
+  .prep-tags{display:flex; gap:6px; flex-wrap:wrap; margin-top:8px;}
+
+  /* ---------- FUNDING / BURSARIES ---------- */
+  .fund-intro-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    margin-bottom:36px;
+  }
+  .fund-explain{
+    background:#fff;
+    border:1px solid var(--rule);
+    border-radius:14px;
+    padding:20px 22px;
+  }
+  .fund-explain h4{
+    font-family:'Fraunces', serif;
+    font-size:16px;
+    margin:0 0 8px;
+  }
+  .fund-explain p{font-size:13.5px; line-height:1.6; color:var(--ink-soft); margin:0;}
+  .fund-explain.bursary{border-top:4px solid var(--private);}
+  .fund-explain.scholarship{border-top:4px solid var(--grammar);}
+
+  .fund-card{
+    background:#fff;
+    border:1px solid var(--rule);
+    border-radius:14px;
+    padding:24px 26px;
+    margin-bottom:18px;
+  }
+  .fund-card h4{
+    font-family:'Fraunces', serif;
+    font-size:19px;
+    font-weight:600;
+    margin:0 0 4px;
+  }
+  .fund-card .fund-meta{font-size:12.5px; color:var(--ink-soft); margin-bottom:16px;}
+  .fund-row{display:grid; grid-template-columns:180px 1fr; gap:16px; margin-bottom:12px; font-size:14px; line-height:1.55;}
+  .fund-row:last-child{margin-bottom:0;}
+  .fund-row .flabel2{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    color:var(--ink-soft);
+    padding-top:2px;
+  }
+
+  footer{
+    border-top:1px solid var(--rule);
+    padding:36px 0 60px;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    line-height:1.6;
+  }
+
+  @media (max-width:640px){
+    .fund-intro-grid{grid-template-columns:1fr;}
+    .prep-row{grid-template-columns:100px 1fr;}
+    .fund-row{grid-template-columns:1fr;}
+  }
+
+  @media (max-width:640px){
+    .field.two-col{grid-template-columns:1fr;}
+    .station{grid-template-columns:80px 1fr;}
+    .line-track{padding-left:22px;}
+    .month-label::before{left:-34px;}
+    .station::before{left:-27px;}
+  }
+
+  /* ---------- TABS ---------- */
+  .tabbar{
+    position:sticky;
+    top:0;
+    z-index:30;
+    background:var(--paper);
+    border-bottom:1px solid var(--rule);
+    display:flex;
+    gap:4px;
+    padding:0 24px;
+    max-width:1120px;
+    margin:0 auto;
+    overflow-x:auto;
+  }
+  .tabbtn{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    background:none;
+    border:none;
+    padding:16px 18px;
+    cursor:pointer;
+    color:var(--ink-soft);
+    border-bottom:3px solid transparent;
+    white-space:nowrap;
+    transition:color .15s ease, border-color .15s ease;
+  }
+  .tabbtn:hover{color:var(--ink);}
+  .tabbtn.active{color:var(--ink); border-bottom-color:var(--state); font-weight:600;}
+  [data-tab]{display:none;}
+  [data-tab].active{display:block;}
+
+  /* ---------- MAP TAB ---------- */
+  #schoolMap{
+    height:560px;
+    width:100%;
+    border-radius:14px;
+    border:1px solid var(--rule);
+    box-shadow:var(--shadow);
+  }
+  .map-legend{display:flex; gap:22px; flex-wrap:wrap; margin-bottom:18px; font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--ink-soft);}
+  .map-legend span{display:inline-flex; align-items:center; gap:7px;}
+  .leaflet-popup-content-wrapper{
+    border-radius:10px;
+    font-family:'Inter', sans-serif;
+  }
+  .leaflet-popup-content{margin:14px 16px;}
+  .popup-tag{
+    display:inline-block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    padding:2px 7px;
+    border-radius:20px;
+    margin-bottom:6px;
+  }
+  .popup-tag.state{background:var(--state-tint); color:var(--state);}
+  .popup-tag.grammar{background:var(--grammar-tint); color:var(--grammar);}
+  .popup-tag.private{background:var(--private-tint); color:var(--private);}
+  .popup-name{font-family:'Fraunces', serif; font-weight:600; font-size:15px; margin:0 0 4px;}
+  .popup-addr{font-size:12.5px; color:var(--ink-soft); margin:0 0 6px; line-height:1.4;}
+  .popup-hint{font-size:11.5px; color:var(--ink-soft); font-style:italic;}
+
+  @media (max-width:640px){
+    #schoolMap{height:420px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow"><span class="dot"></span> WANSTEAD · YEAR 5 NOW · SEPTEMBER 2028 ENTRY</div>
+    <h1 class="title">The Wanstead Line:<br><em>look this year, apply next</em></h1>
+    <p class="lede">Ten schools within reach of E11 — state, grammar and independent. Jacob is in Year 5 now, so this year is for visiting and narrowing down; the real applications, 11+ exam and deadlines land in Year 6, running from autumn 2027 through to March 2028.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">10</div><div class="lab">Schools tracked</div></div>
+      <div class="hero-stat"><div class="num">Y5</div><div class="lab">Now — visiting, no applications yet</div></div>
+      <div class="hero-stat"><div class="num">31 Oct '27</div><div class="lab">CAF deadline (Year 6)</div></div>
+      <div class="hero-stat"><div class="num">1 Mar '28</div><div class="lab"><a href="#funding" style="color:inherit;">National Offer Day ↓</a></div></div>
+    </div>
+  </header>
+
+
+  <div class="tabbar">
+    <button class="tabbtn active" data-tabbtn="timeline" onclick="showTab('timeline')">Timeline</button>
+    <button class="tabbtn" data-tabbtn="prep" onclick="showTab('prep')">Prep &amp; Funding</button>
+    <button class="tabbtn" data-tabbtn="schools" onclick="showTab('schools')">Schools</button>
+    <button class="tabbtn" data-tabbtn="map" onclick="showTab('map')">Map</button>
+  </div>
+
+  <section id="timeline" data-tab="timeline" class="active">
+    <h2 class="section-title">The line, station by station</h2>
+    <p class="section-sub">First, an optional early look this year while Jacob's in Year 5. Then the real cycle: every open day, registration deadline, 11+ exam and offer date for Year 6, in order. Solid dots are open days; diamonds are deadlines.</p>
+    <div class="legend">
+      <span><i class="swatch state"></i> State / comprehensive</span>
+      <span><i class="swatch grammar"></i> Grammar (11+)</span>
+      <span><i class="swatch private"></i> Independent</span>
+      <span><i class="swatch deadline"></i> Deadline / offer day</span>
+    </div>
+    <div class="line-track" id="lineTrack"></div>
+  </section>
+
+  <section id="prep" data-tab="prep" class="active">
+    <h2 class="section-title">Getting ready for the tests</h2>
+    <p class="section-sub">Working backwards from each exam date. Content overlaps heavily across all the tests — verbal and non-verbal reasoning, maths and English comprehension — so practice for one helps the others.</p>
+    <div class="prep-alert">
+      <strong>Good news:</strong> since Jacob is only in Year 5, there's no rush. His Redbridge 11+ sitting is in <strong>September 2027</strong>, not this year — that's over a year away. This year is for visiting schools informally and getting a feel for fit; formal preparation doesn't need to start in earnest until Year 6.
+    </div>
+    <div class="prep-grid" id="prepTrack"></div>
+  </section>
+
+  <section id="funding" data-tab="prep">
+    <h2 class="section-title">Bursaries &amp; scholarships</h2>
+    <p class="section-sub">All three independents — Chigwell, Forest and Bancroft's — offer financial help, but bursaries and scholarships work differently and it's easy to conflate them.</p>
+
+    <div class="fund-intro-grid">
+      <div class="fund-explain bursary">
+        <h4>Bursaries — means-tested</h4>
+        <p>Based on household income and assets, not exam performance. You disclose finances (often via a third-party assessor); awards can cover a small proportion up to 100% of fees. Reassessed roughly annually as circumstances change, and usually applied for separately from — and often earlier than — the entrance exam registration.</p>
+      </div>
+      <div class="fund-explain scholarship">
+        <h4>Scholarships — merit-based</h4>
+        <p>Awarded for academic, music, sport, art or drama achievement, judged through the entrance exam itself, a separate test, or an audition/trial. They carry prestige and recognition, but typically only a modest fee discount (often 10–20%, sometimes none at all for pure academic awards) — rarely enough alone to make a place affordable. Many families combine a scholarship with a means-tested bursary top-up.</p>
+      </div>
+    </div>
+
+    <div class="fund-card">
+      <h4>Chigwell School</h4>
+      <div class="fund-meta">Independent · Years 7–13</div>
+      <div class="fund-row"><div class="flabel2">Bursaries</div><div>Means-tested, available at 11+, 13+ and 16+ entry, up to <strong>100% of tuition</strong>. Assessed by an external agency, Bursary Assessment Associates, based on full household financial disclosure.</div></div>
+      <div class="fund-row"><div class="flabel2">Scholarships</div><div>Academic, Sport and Music scholarships offered at 11+ and 13+ (Art &amp; Drama added at 16+). Judged via exam performance and, for Music, audition.</div></div>
+      <div class="fund-row"><div class="flabel2">Timing &amp; how to apply</div><div>The financial (bursary) assessment runs on its own, earlier timeline than the general 11+ registration — for the most recent cycle this opened in early November with a mid-December deadline, roughly two months before the January entrance exam. Apply for the bursary assessment and register for the entrance exam separately; contact admissions to align the two.</div></div>
+    </div>
+
+    <div class="fund-card">
+      <h4>Forest School</h4>
+      <div class="fund-meta">Independent · Years 7–13</div>
+      <div class="fund-row"><div class="flabel2">Bursaries</div><div>Means-tested support and hardship funds exist, but these are more limited in scope than at Chigwell or Bancroft's — historically including a small number of places reserved for families facing a sudden, significant drop in income (e.g. an existing family, not primarily a broad new-entrant scheme). Worth asking admissions directly how many new-entry bursary places are available for the 2027 cohort.</div></div>
+      <div class="fund-row"><div class="flabel2">Scholarships</div><div>Academic, Music, Art, Sport and Drama scholarships available, typically a modest fee reduction rather than a large remission.</div></div>
+      <div class="fund-row"><div class="flabel2">Other reductions</div><div>A flat <strong>5% sibling or clergy discount</strong> is available, separate from means-tested support.</div></div>
+      <div class="fund-row"><div class="flabel2">Timing &amp; how to apply</div><div>Register interest in financial assistance alongside — or just after — the 18 November 2026 entrance registration deadline; ask admissions for the current bursary application form and its deadline, as this isn't always published on the same schedule as the exam.</div></div>
+    </div>
+
+    <div class="fund-card">
+      <h4>Bancroft's School</h4>
+      <div class="fund-meta">Independent · Years 7–13</div>
+      <div class="fund-row"><div class="flabel2">Bursaries</div><div>Means-tested <strong>Assisted Places</strong> at 11+ and 16+, up to <strong>100% of fees</strong> — Bancroft's flagship financial-aid route, reassessed annually as family circumstances change. This is the most substantial of the three schemes in scope, though the number of places is limited relative to ~450–500 candidates sitting the entrance test each year.</div></div>
+      <div class="fund-row"><div class="flabel2">Scholarships</div><div><strong>Academic Scholarships</strong> carry prestige and recognition but <strong>no fee remission</strong> on their own. <strong>Music Scholarships</strong> cover tuition costs in one instrument, not general school fees.</div></div>
+      <div class="fund-row"><div class="flabel2">Timing &amp; how to apply</div><div>Indicate interest in an Assisted Place when registering for the 11+ by 1 December 2026; a full means assessment follows for shortlisted families, typically alongside or shortly after the January assessment day, ahead of February offers.</div></div>
+    </div>
+
+    <div class="prep-alert" style="border-color:var(--private); border-left-color:var(--private);">
+      <strong>Practical tip:</strong> means-tested bursary applications often need financial disclosure prepared well in advance (tax returns, payslips, assets). If cost is a deciding factor in whether to pursue any of these three schools, it's worth contacting each school's bursar or admissions office now, before the entrance exam registration deadlines, to understand what's realistically available for the 2027 entry year — rather than finding out about the aid on offer only after an exam pass.
+    </div>
+  </section>
+
+  <section id="directory" data-tab="schools">
+    <h2 class="section-title">The schools</h2>
+    <p class="section-sub">Tap any school for open days, fees, 11+ detail, Ofsted findings and results. Grouped by route.</p>
+
+    <div class="cat-block">
+      <div class="cat-heading"><h3>State &amp; comprehensive</h3><span class="cat-count">5 schools</span></div>
+      <div class="cat-rule state"></div>
+      <div class="card-grid" id="grid-state"></div>
+    </div>
+
+    <div class="cat-block">
+      <div class="cat-heading"><h3>Grammar — 11+ selective</h3><span class="cat-count">2 schools</span></div>
+      <div class="cat-rule grammar"></div>
+      <div class="card-grid" id="grid-grammar"></div>
+    </div>
+
+    <div class="cat-block">
+      <div class="cat-heading"><h3>Independent / private</h3><span class="cat-count">3 schools</span></div>
+      <div class="cat-rule private"></div>
+      <div class="card-grid" id="grid-private"></div>
+    </div>
+  </section>
+
+
+  <section id="map" data-tab="map">
+    <h2 class="section-title">Where they are</h2>
+    <p class="section-sub">All ten schools relative to Wanstead. Tap a marker for a quick summary, or switch to the Schools tab for full detail.</p>
+    <div class="map-legend">
+      <span><i class="swatch state"></i> State / comprehensive</span>
+      <span><i class="swatch grammar"></i> Grammar (11+)</span>
+      <span><i class="swatch private"></i> Independent</span>
+    </div>
+    <div id="schoolMap"></div>
+  </section>
+
+  <footer>
+    Sources: school websites, Ofsted/ISI reports, Redbridge &amp; Havering councils, Good Schools Guide, FindMySchool, Locrating, and school-published fee schedules, researched August 2026. Jacob is in Year 5 in 2026/27, so his applications, 11+ exam and independent entrance tests fall a year later, in the 2027/28 cycle, for September 2028 entry. Exact 2027/28 dates weren't published at research time; they're shown here as estimates based on the current (2026/27) cycle and should be confirmed with each school as they're released. Fees and bursary/scholarship terms are typically reviewed annually — verify current figures on each school's admissions page nearer the time.
+  </footer>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal" id="modal"></div>
+</div>
+
+<script>
+const SCHOOLS = [
+  {
+    id:"wanstead-high", cat:"state", name:"Wanstead High School",
+    tagline:"Community co-ed · 11–19 · Est. 1924",
+    address:"Redbridge Lane West, Wanstead, E11 2JZ",
+    distance:"In Wanstead — closest school on this list",
+    ofsted:"Good (ungraded inspection, May 2025)",
+    ofstedNote:"Inspectors found the school \u201chas worked effectively to ensure quality of education is strong\u201d, with excellent pupil behaviour. Ofsted no longer issues a single overall grade for state schools.",
+    results:"Attainment 8: 54.1 · 61.1% grade 5+ in English &amp; maths · ~74.7% achieving 5+ GCSEs at grade 9–4 · A-level value-added in the top 10% nationally (Platinum Award).",
+    ethos:"Non-selective comprehensive specialising in performing arts, ~1,530 pupils. \u201cAbeunt Studia in Mores\u201d — studies build character.",
+    openDay:"Autumn 2026 date TBC — check wansteadhigh.co.uk from early September. (2025's evening was Thu 2 Oct, 5–7:30pm.)",
+    deadline:"Redbridge common application form — expect ~31 October 2027 (Jacob applies in Year 6, for Sept 2028 entry)",
+    fees:null, examInfo:null
+  },
+  {
+    id:"trinity", cat:"state", name:"Trinity Catholic High School",
+    tagline:"Voluntary-aided Catholic co-ed · 11–18",
+    address:"Mornington Road, Woodford Green, IG8 0TP",
+    distance:"~2–3 miles north of Wanstead",
+    ofsted:"Good (February 2023)",
+    ofstedNote:"Strengths identified in attainment, attendance and pupil destinations across the school.",
+    results:"Around 80% of sixth formers progress to university. Large school (~1,600–1,700 pupils) across two sites, Diocese of Brentwood.",
+    ethos:"Strong Catholic ethos with daily Mass and close pastoral care at its centre.",
+    openDay:"Prospective Open Morning — Thursday 8 October 2026, Upper Site (Mornington Road). Register via the school's Year 7 page.",
+    deadline:"Redbridge common application form — expect ~31 October 2027 (Jacob applies in Year 6, for Sept 2028 entry), plus the school's own Supplementary Information Form for faith priority",
+    fees:null, examInfo:null
+  },
+  {
+    id:"woodbridge", cat:"state", name:"Woodbridge High School",
+    tagline:"Community co-ed · 11–18 · Languages, Business &amp; Enterprise College",
+    address:"St Barnabas Road, Woodford Green, IG8 7DQ",
+    distance:"~2 miles north of Wanstead",
+    ofsted:"Outstanding (February 2023)",
+    ofstedNote:"Improved from a previous Good rating. The \u201cWoodbridge Way\u201d values of kindness, inclusion and excellence were confirmed as consistently demonstrated.",
+    results:"~2,000 pupils, ten-form entry, ~300 into Year 7 each year. Sixth form of ~370.",
+    ethos:"Applied Learning specialism alongside languages and business/enterprise focus.",
+    openDay:"Tours run end of September–early October 2026, booking required — booking links released on the website in early September.",
+    deadline:"Redbridge common application form — expect ~31 October 2027 (Jacob applies in Year 6, for Sept 2028 entry)",
+    fees:null, examInfo:null
+  },
+  {
+    id:"beal", cat:"state", name:"Beal High School",
+    tagline:"Academy co-ed · lead school, Beacon Multi-Academy Trust",
+    address:"Woodford Bridge Road, Ilford, IG4 5LP",
+    distance:"~2–3 miles east/northeast of Wanstead",
+    ofsted:"Good (November 2021)",
+    ofstedNote:"Outstanding for Personal Development, Leadership &amp; Management, and Sixth Form provision.",
+    results:"~2,610 pupils — very large intake. Strong Progress 8/Attainment 8 relative to national averages; 90% of sixth-form leavers progress to university, ~30% to Russell Group.",
+    ethos:"Highly diverse intake; well-established sixth form.",
+    openDay:"Autumn 2026 date TBC — check bealhighschool.co.uk from early September. (2025's evening was Tue 23 Sep, 4–6pm.)",
+    deadline:"Redbridge common application form — expect ~31 October 2027 (Jacob applies in Year 6, for Sept 2028 entry)",
+    fees:null, examInfo:null
+  },
+  {
+    id:"chingford", cat:"state", name:"Chingford Foundation School",
+    tagline:"Foundation co-ed · 11–18 · Humanities College",
+    address:"Nevin Drive, Chingford, E4 7LT (Waltham Forest)",
+    distance:"~4–5 miles northwest of Wanstead",
+    ofsted:"Good, all categories (October 2023)",
+    ofstedNote:"Praised for a broad, well-sequenced curriculum, subject-expert teachers, strong SEND access and a strong careers programme; sixth form flagged as a particular strength.",
+    results:"~1,475 pupils. Results reported consistently above national averages at GCSE and A-level.",
+    ethos:"Founded 1938; specialist Humanities College under Chingford Academies Trust.",
+    openDay:"Autumn 2026 date TBC — check chingfordfoundation.org. (2025's Year 7 evening was Thu 2 Oct.) Summer school also offered for incoming Year 7.",
+    deadline:"Waltham Forest coordinated application — expect ~31 October 2027",
+    fees:null, examInfo:null
+  },
+  {
+    id:"ichs", cat:"grammar", name:"Ilford County High School",
+    tagline:"Selective boys' grammar (state) · 11–18",
+    address:"Fremantle Road, Barkingside, Ilford, IG6 2JB",
+    distance:"~3–4 miles northeast of Wanstead",
+    ofsted:"Good (September 2021)",
+    ofstedNote:"Commended for quality of education, behaviour &amp; attitudes, and personal development.",
+    results:"2025: Attainment 8 ~75.7 (2nd in Redbridge) · 97.2% grade 5+ in English &amp; maths · 67.9% of GCSEs at grade 9–7. A-level: 70.5% A*–B, 47.7% A*–A.",
+    ethos:"Admits 180 boys into Year 7 each year; ~1,000–1,138 pupils on roll.",
+    openDay:"Borough grammar open evenings historically held late April — confirm the autumn Year 7 event on ichs.org.uk.",
+    deadline:"Must register for the Redbridge 11+ AND name ICHS on the common application form — expect ~31 October 2027 (Jacob's cycle, for Sept 2028 entry)",
+    fees:null,
+    examInfo:{
+      board:"Redbridge 11 Plus selection test (GL Assessment-style) — English &amp; verbal reasoning (1hr) + maths &amp; non-verbal reasoning (1hr)",
+      testDate:"Expect ~mid-September 2027 (2026's test was Friday 18 September, for reference)",
+      regWindow:"Expect registration ~1 May – 15 June 2027 (5pm) via the Redbridge website, ahead of Jacob's September 2027 sitting",
+      passMark:"104 — meeting the mark makes a child eligible, not guaranteed a place. In Sept 2024, 1,116 boys sat the test and 447 met 104, competing for 180 places.",
+      resultsOut:"Expect results emailed ~mid-October 2027"
+    }
+  },
+  {
+    id:"coopers", cat:"grammar", name:"Coopers' Company &amp; Coborn School",
+    tagline:"Non-selective co-ed (despite grammar-style reputation) · 11–18",
+    address:"St Mary's Lane, Upminster, RM14 3HS (Havering)",
+    distance:"~10+ miles east of Wanstead — the furthest school on this list",
+    ofsted:"Good (2022)",
+    ofstedNote:"No specific concerns flagged; broad, well-regarded provision.",
+    results:"2025: Attainment 8 58.2 · Progress 8 +0.45 · 71.3% grade 5+ English &amp; maths · 34% of grades 9–7. A-level ~70% A*–B. Named No.1 State School for Sport in England 2024.",
+    ethos:"Christian character (\u201cLove as Brethren\u201d), ~1,550 pupils. Note: has been non-selective since 2005 — no 11+ exam, admission by Havering's coordinated process and geography (~5.4 applications per place; last distance offered ~0.87 miles).",
+    openDay:"Year 7 open evening historically mid-September — check cooperscoborn.org.uk. (2025's was Wed 17 Sep, from 4pm.)",
+    deadline:"Havering coordinated transfer application — expect ~31 October 2027. Given the distance, realistically only viable for families very close to Upminster.",
+    fees:null, examInfo:null
+  },
+  {
+    id:"chigwell", cat:"private", name:"Chigwell School",
+    tagline:"Independent co-ed · 4–18 · ISI Excellent",
+    address:"High Road, Chigwell, Essex IG7 6QF",
+    distance:"~4–5 miles north of Wanstead (free shuttle from Buckhurst Hill station)",
+    ofsted:"ISI inspection April 2023: Excellent across the board; later material-change inspection found a \u201cSignificant Strength.\u201d",
+    ofstedNote:"Named Independent Secondary School of the Year 2025 (East Anglia, Sunday Times Parent Power); Top 50 UK co-ed independents; Top 10 for Academic Excellence 2026.",
+    results:"2025: 69% grades 9–7 at GCSE · A-level 44% A*/A, 73% A*–B. Broad curriculum with EPQ/HPQ; strong Russell Group and some Oxbridge progression.",
+    ethos:"Academic but not overly pressurised — the balanced \u201cmiddle ground.\u201d",
+    openDay:"Whole-school open morning — Saturday 26 September 2026, 8:45am–1:00pm. Sixth Form open evening Thu 1 Oct 2026, 5:30–7:30pm. Working-day tours on request.",
+    deadline:"Direct application to the school (chigwell-school.org)",
+    fees:{
+      tuition:"\u00a310,224 per term (Years 7–13, inc VAT)",
+      registration:"\u00a3180 (inc VAT, non-refundable)",
+      deposit:"\u00a31,680 (inc VAT) — \u00a31,200 credited to first term, \u00a3180 refundable, \u00a3300 retained",
+      bursaries:"Means-tested bursaries at 11+/13+/16+, up to 100% of tuition (via Bursary Assessment Associates); Academic, Sport and Music scholarships at 11+/13+"
+    },
+    examInfo:{
+      board:"Online tests via Quest Admissions + a written creative-writing task + a ~30-min parent/candidate meeting",
+      testDate:"Expect the 11+ entrance exam ~early-mid January 2028 (2026/27's was Sat 9 Jan, for reference)",
+      regWindow:"Expect registration (\u00a3180) to close ~late November 2027; 2026's deadline was Wed 25 Nov, for reference",
+      passMark:null,
+      resultsOut:null
+    }
+  },
+  {
+    id:"forest", cat:"private", name:"Forest School",
+    tagline:"Independent co-ed · 4–18 · Edge of Epping Forest",
+    address:"College Place, Snaresbrook, E17 3PY",
+    distance:"~1–2 miles west of Wanstead — closest independent (near Snaresbrook Underground)",
+    ofsted:"ISI inspection confirms the school meets all standards, with early years provision a particular strength.",
+    ofstedNote:"HMC/IAPS all-through school, ~1,500 pupils.",
+    results:"77.8% of GCSE entries at grades 9–7 · 80% of A-levels at A*–B.",
+    ethos:"Strong outdoor-learning tradition and nurturing pastoral ethos, set on the edge of Epping Forest.",
+    openDay:"Senior-school admissions events run through autumn 2026 — confirm exact dates at forest.org.uk/admissions-overview/admissions-events.",
+    deadline:"Direct application to the school (forest.org.uk)",
+    fees:{
+      tuition:"\u00a310,898 per term inc. VAT (Years 7–13; \u00a38,790 before VAT), includes obligatory \u00a3350/term lunch charge",
+      registration:"\u00a3180 (\u00a3240 overseas)",
+      deposit:"\u00a31,400 payable on acceptance",
+      bursaries:"Means-tested support and hardship funds (up to ~2 places reserved for sudden income loss); academic, music, art, sport and drama scholarships. Sibling/clergy reductions of 5%."
+    },
+    examInfo:{
+      board:"Two-part: ~1hr10 digital test (Maths, English, Verbal &amp; Non-Verbal Reasoning, Puzzles) + 30-min paper-based written English",
+      testDate:"Assessment days historically mid-December — expect ~December 2027 for Jacob's cycle",
+      regWindow:"Expect online registration to close ~mid-November 2027 (2026's deadline was Wed 18 Nov, for reference)",
+      passMark:"No formal published cut-off; indicative competitive range ~110–115. ~140 Year 7 places.",
+      resultsOut:null
+    }
+  },
+  {
+    id:"bancrofts", cat:"private", name:"Bancroft's School",
+    tagline:"Independent co-ed · 7–18 · Founded 1737, Drapers' Company",
+    address:"611–627 High Road, Woodford Green, IG8 0RF",
+    distance:"~2–3 miles north of Wanstead, borders Epping Forest",
+    ofsted:"Inspected by ISI (2025). Winner, Talk Education Alice Rose Award 2025.",
+    ofstedNote:"Consistently high-achieving and academically selective.",
+    results:"2025: A-level 75% grades A*–A, 93% A*–B. GCSE 71% grades 9/8, 44% at grade 9. 90 students to Russell Group, 10 to Oxbridge, 8 to Medicine.",
+    ethos:"\u201cLearning for Life\u201d ethos, 100+ clubs — aspirational with strong pastoral care. ~1,100 pupils.",
+    openDay:"Whole-school open event Saturday 3 October 2026; sports open morning Thu 12 November 2026 (9:30–11am). Book at bancrofts.org/admissions/open-days.",
+    deadline:"Direct application to the school (bancrofts.org)",
+    fees:{
+      tuition:"\u00a310,400 per term inc. VAT (\u00a38,666.67 net)",
+      registration:"\u00a3150 (inc VAT, non-refundable)",
+      deposit:"\u00a32,500 acceptance deposit",
+      bursaries:"Means-tested Assisted Places at 11+ and 16+, up to 100% of fees (reassessed annually); Academic and Music Scholarships"
+    },
+    examInfo:{
+      board:"CEM Select online test (Verbal, Non-Verbal &amp; Numerical Reasoning) + short English &amp; maths papers, then interview for strong performers",
+      testDate:"Expect assessments on-site ~early January 2028",
+      regWindow:"Expect registration to close ~early December 2027 (2026's deadline was 1 Dec, for reference); fee \u00a3150",
+      passMark:"~450–500 candidates compete for ~60–65 places",
+      resultsOut:"Expect offers emailed ~February 2028; Offer Holder Morning typically late February"
+    }
+  }
+];
+
+const TIMELINE = [
+  {month:"Now — Autumn 2026 · Year 5 (optional early look)", items:[
+    {date:"Fri 18 Sep '26", cat:"grammar", title:"Redbridge 11+ test — this year's Year 6 cohort", desc:"Not Jacob's sitting — this is next year's Year 6 group. Included only as a marker of how the cycle runs; his sitting is in September 2027."},
+    {date:"Sat 26 Sep '26", cat:"private", title:"Chigwell School open morning", desc:"Worth attending informally even a year early, purely to get a feel for the school — no registration implied."},
+    {date:"Late Sep (TBC)", cat:"state", title:"Beal High School open evening", desc:"Optional early visit."},
+    {date:"Late Sep–early Oct (TBC)", cat:"state", title:"Woodbridge High School tours", desc:"Optional early visit, booking required."},
+    {date:"Early Oct (TBC)", cat:"state", title:"Wanstead High &amp; Chingford Foundation open evenings", desc:"Optional early visits — both usually run in early October."},
+    {date:"Sat 3 Oct '26", cat:"private", title:"Bancroft's whole-school open event", desc:"Optional early visit."},
+    {date:"Thu 8 Oct '26", cat:"state", title:"Trinity Catholic open morning", desc:"Optional early visit, Upper Site."},
+    {date:"Nov '26", cat:"private", title:"Forest &amp; independent registration deadlines (this year's cohort)", desc:"Not relevant to Jacob — these apply to the current Year 6 group applying for Sept 2027 entry."}
+  ]},
+  {month:"Year 5, spring–summer 2027", items:[
+    {date:"May–Jun 2027", cat:"grammar", title:"Redbridge 11+ registration opens", desc:"Jacob registers for the Ilford County High selection test in his final term of Year 5, if pursuing the grammar route."}
+  ]},
+  {month:"September 2027 · Year 6 begins", items:[
+    {date:"~Sep 2027 (exact date TBC)", cat:"grammar", title:"Redbridge 11+ exam — Jacob's sitting", desc:"Expect a similar format and timing to the 2026 cycle: English/verbal reasoning and maths/non-verbal reasoning, one hour each, likely a Friday in mid-September."},
+    {date:"Autumn 2027", cat:"state", title:"Open days repeat — the ones that count", desc:"Wanstead High, Trinity Catholic, Woodbridge, Beal and Chingford Foundation all hold their Year 7 open events again — this is the round to attend seriously, ahead of the application form."}
+  ]},
+  {month:"October 2027", items:[
+    {date:"Autumn 2027", cat:"private", title:"Chigwell &amp; Bancroft's open events repeat", desc:"Same pattern as 2026 — expect similar late September/early October dates."},
+    {date:"~31 Oct 2027", cat:"deadline", title:"Common application form deadline", desc:"Redbridge / Waltham Forest / Havering — name up to 6 schools in preference order, including ICHS if 11+ registered. Exact date confirmed closer to the time."}
+  ]},
+  {month:"November 2027", items:[
+    {date:"~Mid-Nov 2027", cat:"deadline", title:"Forest School registration closes", desc:"Expect a similar window to the 2026 cycle (18 November)."},
+    {date:"~Late Nov 2027", cat:"deadline", title:"Chigwell School 11+ registration closes", desc:"Expect a similar window to the 2026 cycle (25 November)."}
+  ]},
+  {month:"December 2027", items:[
+    {date:"~Early Dec 2027", cat:"deadline", title:"Bancroft's registration deadline", desc:"Expect a similar window to the 2026 cycle (1 December)."},
+    {date:"~Mid-Dec 2027", cat:"private", title:"Forest School assessment days", desc:"Expect similar timing to the 2026 cycle."}
+  ]},
+  {month:"January 2028", items:[
+    {date:"~Early Jan 2028", cat:"private", title:"Bancroft's on-site assessments", desc:"CEM Select test + English/maths papers, interviews follow for strong performers."},
+    {date:"~9 Jan 2028 (TBC)", cat:"private", title:"Chigwell School 11+ entrance exam", desc:"Expect a Saturday in early-to-mid January, similar to the 2026 cycle."}
+  ]},
+  {month:"February 2028", items:[
+    {date:"Feb 2028", cat:"private", title:"Independent offers issued", desc:"Bancroft's and other independents typically confirm outcomes this month."},
+    {date:"~Late Feb 2028", cat:"deadline", title:"Bancroft's Offer Holder Morning", desc:"For families who receive an offer."}
+  ]},
+  {month:"March 2028", items:[
+    {date:"~1 Mar 2028", cat:"deadline", title:"National Offer Day", desc:"State secondary school offers released across England, including Redbridge grammar and comprehensive places."},
+    {date:"~Mid-Mar 2028", cat:"deadline", title:"Havering acceptance deadline", desc:"Applies specifically to Coopers' Company & Coborn offers."}
+  ]}
+];
+
+const PREP = [
+  {when:"Now", sub:"Year 5, 2026", title:"Foundations, no pressure yet", cats:["state"],
+   desc:"Plenty of runway. Focus on things that pay off everywhere: reading widely and often, times-tables fluency, and general vocabulary. No formal 11+ practice or timed papers needed at this stage — better to build genuine ability than exam drilling this early."},
+  {when:"Autumn", sub:"Year 5, 2026", title:"Optional early school visits", cats:["state","private"],
+   desc:"Attend a handful of open days out of curiosity if timing allows — it costs nothing, helps narrow down family favourites, and takes the pressure off next year's visits. Not compulsory; the open days that matter for the application repeat again in autumn 2027."},
+  {when:"Spring", sub:"Year 5, 2027", title:"Light, low-pressure introduction to reasoning styles", cats:["grammar"],
+   desc:"A few minutes here and there with sample verbal and non-verbal reasoning questions — not full timed papers yet — just so the question formats feel familiar rather than strange when real practice ramps up."},
+  {when:"May–Jun", sub:"Year 5 → 6, 2027", title:"Redbridge 11+ registration window", cats:["grammar"],
+   desc:"Register for the Ilford County High selection test in Jacob's final term of Year 5, if pursuing the grammar route."},
+  {when:"Summer", sub:"2027", title:"Step up to regular timed practice", cats:["grammar"],
+   desc:"Move to proper timed verbal and non-verbal reasoning papers, a few short sessions a week, building toward the September sitting."},
+  {when:"Sep", sub:"Year 6 begins, 2027", title:"Redbridge 11+ exam", cats:["grammar"],
+   desc:"Sat in the first few weeks of Year 6. After this, attention shifts to the independent school tests."},
+  {when:"Autumn", sub:"Year 6, 2027", title:"Independent exam prep &amp; the 'real' open days", cats:["private"],
+   desc:"Attend this year's Wanstead/Trinity/Woodbridge/Bancroft's/Chigwell open events seriously — these are the ones tied to the actual application. Build maths reasoning, comprehension and short creative writing for the independent tests; register by each school's November/December deadline."},
+  {when:"Dec–Jan", sub:"2027–28", title:"Independent entrance exams", cats:["private"],
+   desc:"Forest (mid-Dec), Bancroft's (early Jan) and Chigwell (early-mid Jan) assessments are sat."},
+  {when:"Mar", sub:"2028", title:"National Offer Day", cats:["deadline"],
+   desc:"State and grammar places confirmed. By this point independent offers have usually already arrived."}
+];
+
+function renderPrep(){
+  const track = document.getElementById('prepTrack');
+  track.innerHTML = PREP.map(p => `
+    <div class="prep-row">
+      <div class="prep-when"><span class="prep-when-main">${p.when}</span>${p.sub}</div>
+      <div class="prep-content">
+        <h4>${p.title}</h4>
+        <p>${p.desc}</p>
+        <div class="prep-tags">${p.cats.map(c=>`<span class="tag ${c}">${labelFor(c)}</span>`).join('')}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderTimeline(){
+  const track = document.getElementById('lineTrack');
+  track.innerHTML = TIMELINE.map(block => `
+    <div class="month-block">
+      <div class="month-label">${block.month}</div>
+      ${block.items.map(it => `
+        <div class="station ${it.cat}">
+          <div class="st-date">${it.date}</div>
+          <div class="st-body">
+            <div class="st-title">${it.title}<span class="tag ${it.cat}">${labelFor(it.cat)}</span></div>
+            <div class="st-desc">${it.desc}</div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+}
+
+function labelFor(cat){
+  return {state:"State", grammar:"Grammar", private:"Independent", deadline:"Deadline"}[cat] || cat;
+}
+
+function renderCards(){
+  const groups = {state:'grid-state', grammar:'grid-grammar', private:'grid-private'};
+  Object.keys(groups).forEach(cat=>{
+    const el = document.getElementById(groups[cat]);
+    el.innerHTML = SCHOOLS.filter(s=>s.cat===cat).map(s => `
+      <div class="card ${s.cat}" onclick="openModal('${s.id}')">
+        <h4>${s.name}</h4>
+        <div class="meta">${s.tagline}<br>${s.distance}</div>
+        <span class="ofsted-chip">${s.ofsted.split('(')[0].trim()}</span>
+        <div class="tap-hint">tap for details →</div>
+      </div>
+    `).join('');
+  });
+}
+
+function openModal(id){
+  const s = SCHOOLS.find(x=>x.id===id);
+  const modal = document.getElementById('modal');
+  modal.innerHTML = `
+    <div class="modal-head ${s.cat}">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <span class="tag ${s.cat}">${labelFor(s.cat)}</span>
+      <h3>${s.name}</h3>
+      <div class="sub">${s.tagline}</div>
+    </div>
+    <div class="modal-body">
+      <div class="field two-col">
+        <div>
+          <div class="flabel">Address</div>
+          <div class="fval">${s.address}</div>
+        </div>
+        <div>
+          <div class="flabel">Distance from Wanstead</div>
+          <div class="fval">${s.distance}</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="flabel">Ofsted / inspection</div>
+        <div class="fval"><strong>${s.ofsted}</strong><br>${s.ofstedNote}</div>
+      </div>
+
+      <div class="field">
+        <div class="flabel">Results &amp; reputation</div>
+        <div class="fval">${s.results}</div>
+      </div>
+
+      <div class="field">
+        <div class="flabel">Character &amp; ethos</div>
+        <div class="fval">${s.ethos}</div>
+      </div>
+
+      ${s.fees ? `
+      <div class="field">
+        <div class="flabel">Fees (2026/27 rates — reviewed annually; expect higher by 2028 entry)</div>
+        <div class="fval">
+          <strong>Tuition:</strong> ${s.fees.tuition}<br>
+          <strong>Registration:</strong> ${s.fees.registration}<br>
+          <strong>Deposit:</strong> ${s.fees.deposit}<br>
+          <strong>Bursaries/scholarships:</strong> ${s.fees.bursaries}
+        </div>
+      </div>` : ''}
+
+      ${s.examInfo ? `
+      <div class="field">
+        <div class="flabel">11+ / entrance exam</div>
+        <div class="fval">
+          <strong>Format:</strong> ${s.examInfo.board}<br>
+          <strong>Test date:</strong> ${s.examInfo.testDate}<br>
+          <strong>Registration:</strong> ${s.examInfo.regWindow}
+          ${s.examInfo.passMark ? `<br><strong>Pass mark / competition:</strong> ${s.examInfo.passMark}` : ''}
+          ${s.examInfo.resultsOut ? `<br><strong>Results:</strong> ${s.examInfo.resultsOut}` : ''}
+        </div>
+      </div>` : ''}
+
+      <div class="field">
+        <div class="flabel">Open day</div>
+        <div class="fval">${s.openDay}</div>
+      </div>
+
+      <div class="field">
+        <div class="flabel">How to apply</div>
+        <div class="fval">${s.deadline}</div>
+      </div>
+    </div>
+  `;
+  document.getElementById('overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(){
+  document.getElementById('overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('overlay').addEventListener('click', e=>{
+  if(e.target.id === 'overlay') closeModal();
+});
+document.addEventListener('keydown', e=>{
+  if(e.key === 'Escape') closeModal();
+});
+
+renderTimeline();
+renderPrep();
+renderCards();
+
+// ---------- Approximate coordinates for each school (for the Map tab) ----------
+const COORDS = {
+  "wanstead-high": [51.5757, 0.0281],
+  "trinity":       [51.5999, 0.0291],
+  "woodbridge":    [51.5930, 0.0201],
+  "beal":          [51.5889, 0.0430],
+  "chingford":     [51.6280, -0.0012],
+  "ichs":          [51.5928, 0.0810],
+  "coopers":       [51.5583, 0.2503],
+  "chigwell":      [51.6178, 0.0752],
+  "forest":        [51.5820, -0.0139],
+  "bancrofts":     [51.6041, 0.0261]
+};
+const WANSTEAD_CENTER = [51.5757, 0.0281];
+const CAT_COLOR = {state:"#7A2632", grammar:"#9C7A2E", private:"#2F4B3C"};
+
+let mapInstance = null;
+function initMapIfNeeded(){
+  if(mapInstance) { setTimeout(()=>mapInstance.invalidateSize(), 50); return; }
+  mapInstance = L.map('schoolMap').setView(WANSTEAD_CENTER, 11);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18,
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(mapInstance);
+
+  // Mark Wanstead itself as a small reference point
+  L.circleMarker(WANSTEAD_CENTER, {
+    radius:6, color:'#1C2B4A', weight:2, fillColor:'#F6F1E3', fillOpacity:1
+  }).addTo(mapInstance).bindPopup('<div class="popup-name">Wanstead, E11</div><div class="popup-addr">Home base for this guide</div>');
+
+  SCHOOLS.forEach(s => {
+    const coord = COORDS[s.id];
+    if(!coord) return;
+    const color = CAT_COLOR[s.cat] || '#1C2B4A';
+    const marker = L.circleMarker(coord, {
+      radius:10, color:'#fff', weight:2, fillColor:color, fillOpacity:0.95
+    }).addTo(mapInstance);
+    marker.bindPopup(`
+      <span class="popup-tag ${s.cat}">${labelFor(s.cat)}</span>
+      <div class="popup-name">${s.name}</div>
+      <div class="popup-addr">${s.address}<br>${s.distance}</div>
+      <div class="popup-hint">See the Schools tab for open days, fees &amp; Ofsted detail</div>
+    `);
+  });
+
+  setTimeout(()=>mapInstance.invalidateSize(), 50);
+}
+
+function showTab(tab){
+  document.querySelectorAll('.tabbtn').forEach(b => b.classList.toggle('active', b.dataset.tabbtn === tab));
+  document.querySelectorAll('[data-tab]').forEach(el => el.classList.toggle('active', el.dataset.tab === tab));
+  if(tab === 'map'){ initMapIfNeeded(); }
+}
+
+showTab('timeline');
+
+</script>
+</body>
+</html>
