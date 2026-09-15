@@ -339,6 +339,21 @@
     padding-right:36px;
   }
   .modal-head .sub{font-size:13.5px; color:var(--ink-soft);}
+  .modal-website-link{
+    display:inline-block;
+    margin-top:12px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    padding:6px 12px;
+    border-radius:20px;
+    background:var(--ink);
+    color:var(--paper);
+    text-decoration:none;
+    transition:opacity .15s ease;
+  }
+  .modal-website-link:hover{opacity:0.8;}
   .modal-body{padding:22px 30px 30px;}
   .field{margin-bottom:18px;}
   .field .flabel{
@@ -670,6 +685,7 @@
 const SCHOOLS = [
   {
     id:"wanstead-high", cat:"state", name:"Wanstead High School",
+    website:"https://www.wansteadhigh.co.uk/",
     tagline:"Community co-ed · 11–19 · Est. 1924",
     address:"Redbridge Lane West, Wanstead, E11 2JZ",
     distance:"In Wanstead — closest school on this list",
@@ -677,12 +693,13 @@ const SCHOOLS = [
     ofstedNote:"Inspectors found the school \u201chas worked effectively to ensure quality of education is strong\u201d, with excellent pupil behaviour. Ofsted no longer issues a single overall grade for state schools.",
     results:"Attainment 8: 54.1 · 61.1% grade 5+ in English &amp; maths · ~74.7% achieving 5+ GCSEs at grade 9–4 · A-level value-added in the top 10% nationally (Platinum Award).",
     ethos:"Non-selective comprehensive specialising in performing arts, ~1,530 pupils. \u201cAbeunt Studia in Mores\u201d — studies build character.",
-    openDay:"Autumn 2026 date TBC — check wansteadhigh.co.uk from early September. (2025's evening was Thu 2 Oct, 5–7:30pm.)",
+    openDay:"Confirmed: Year 7 Open Evening Thursday 1 October 2026, 5:00\u20137:30pm.",
     deadline:"Redbridge common application form — expect ~31 October 2027 (Jacob applies in Year 6, for Sept 2028 entry)",
     fees:null, examInfo:null
   },
   {
     id:"trinity", cat:"state", name:"Trinity Catholic High School",
+    website:"https://www.tchs.org.uk/",
     tagline:"Voluntary-aided Catholic co-ed · 11–18",
     address:"Mornington Road, Woodford Green, IG8 0TP",
     distance:"~2–3 miles north of Wanstead",
@@ -696,6 +713,7 @@ const SCHOOLS = [
   },
   {
     id:"woodbridge", cat:"state", name:"Woodbridge High School",
+    website:"https://www.woodbridgehigh.co.uk/",
     tagline:"Community co-ed · 11–18 · Languages, Business &amp; Enterprise College",
     address:"St Barnabas Road, Woodford Green, IG8 7DQ",
     distance:"~2 miles north of Wanstead",
@@ -703,12 +721,13 @@ const SCHOOLS = [
     ofstedNote:"Improved from a previous Good rating. The \u201cWoodbridge Way\u201d values of kindness, inclusion and excellence were confirmed as consistently demonstrated.",
     results:"~2,000 pupils, ten-form entry, ~300 into Year 7 each year. Sixth form of ~370.",
     ethos:"Applied Learning specialism alongside languages and business/enterprise focus.",
-    openDay:"Tours run end of September–early October 2026, booking required — booking links released on the website in early September.",
+    openDay:"Confirmed: Primary Transfer Webinar Wednesday 16 September 2026, 6:00pm. Guided tours 8:45am on Mon 28 Sep, Tue 29 Sep, Wed 30 Sep, Mon 5 Oct (also 5:00pm that day) and Tue 6 Oct 2026 — book via woodbridgehigh.co.uk.",
     deadline:"Redbridge common application form — expect ~31 October 2027 (Jacob applies in Year 6, for Sept 2028 entry)",
     fees:null, examInfo:null
   },
   {
     id:"beal", cat:"state", name:"Beal High School",
+    website:"https://www.bealhighschool.co.uk/",
     tagline:"Academy co-ed · lead school, Beacon Multi-Academy Trust",
     address:"Woodford Bridge Road, Ilford, IG4 5LP",
     distance:"~2–3 miles east/northeast of Wanstead",
@@ -716,12 +735,13 @@ const SCHOOLS = [
     ofstedNote:"Outstanding for Personal Development, Leadership &amp; Management, and Sixth Form provision.",
     results:"~2,610 pupils — very large intake. Strong Progress 8/Attainment 8 relative to national averages; 90% of sixth-form leavers progress to university, ~30% to Russell Group.",
     ethos:"Highly diverse intake; well-established sixth form.",
-    openDay:"Autumn 2026 date TBC — check bealhighschool.co.uk from early September. (2025's evening was Tue 23 Sep, 4–6pm.)",
+    openDay:"Confirmed: Year 6 Open Evening Thursday 25 September 2026, 4:00\u20136:30pm (school closes early for students that day, 1:15pm).",
     deadline:"Redbridge common application form — expect ~31 October 2027 (Jacob applies in Year 6, for Sept 2028 entry)",
     fees:null, examInfo:null
   },
   {
     id:"chingford", cat:"state", name:"Chingford Foundation School",
+    website:"https://www.chingfordfoundation.org/",
     tagline:"Foundation co-ed · 11–18 · Humanities College",
     address:"Nevin Drive, Chingford, E4 7LT (Waltham Forest)",
     distance:"~4–5 miles northwest of Wanstead",
@@ -735,6 +755,7 @@ const SCHOOLS = [
   },
   {
     id:"ichs", cat:"grammar", name:"Ilford County High School",
+    website:"https://ichs.org.uk/",
     tagline:"Selective boys' grammar (state) · 11–18",
     address:"Fremantle Road, Barkingside, Ilford, IG6 2JB",
     distance:"~3–4 miles northeast of Wanstead",
@@ -755,6 +776,7 @@ const SCHOOLS = [
   },
   {
     id:"coopers", cat:"grammar", name:"Coopers' Company &amp; Coborn School",
+    website:"https://www.cooperscoborn.org.uk/",
     tagline:"Non-selective co-ed (despite grammar-style reputation) · 11–18",
     address:"St Mary's Lane, Upminster, RM14 3HS (Havering)",
     distance:"~10+ miles east of Wanstead — the furthest school on this list",
@@ -768,6 +790,7 @@ const SCHOOLS = [
   },
   {
     id:"chigwell", cat:"private", name:"Chigwell School",
+    website:"https://www.chigwell-school.org/",
     tagline:"Independent co-ed · 4–18 · ISI Excellent",
     address:"High Road, Chigwell, Essex IG7 6QF",
     distance:"~4–5 miles north of Wanstead (free shuttle from Buckhurst Hill station)",
@@ -793,6 +816,7 @@ const SCHOOLS = [
   },
   {
     id:"forest", cat:"private", name:"Forest School",
+    website:"https://www.forest.org.uk/",
     tagline:"Independent co-ed · 4–18 · Edge of Epping Forest",
     address:"College Place, Snaresbrook, E17 3PY",
     distance:"~1–2 miles west of Wanstead — closest independent (near Snaresbrook Underground)",
@@ -818,6 +842,7 @@ const SCHOOLS = [
   },
   {
     id:"bancrofts", cat:"private", name:"Bancroft's School",
+    website:"https://www.bancrofts.org/",
     tagline:"Independent co-ed · 7–18 · Founded 1737, Drapers' Company",
     address:"611–627 High Road, Woodford Green, IG8 0RF",
     distance:"~2–3 miles north of Wanstead, borders Epping Forest",
@@ -845,13 +870,16 @@ const SCHOOLS = [
 
 const TIMELINE = [
   {month:"Now — Autumn 2026 · Year 5 (optional early look)", items:[
+    {date:"Wed 16 Sep '26", cat:"state", title:"Woodbridge High Primary Transfer Webinar", desc:"6:00pm online — a low-effort way to hear about the school before deciding whether to visit in person."},
     {date:"Sat 19 Sep '26 — soon!", cat:"private", title:"Forest School whole-school Open Morning", desc:"Confirmed date, coming up in the next few weeks. Worth attending even a year early — Forest is the closest independent to Wanstead, so easy to pop into."},
-    {date:"Sat 26 Sep '26", cat:"private", title:"Chigwell School open morning", desc:"Worth attending informally even a year early, purely to get a feel for the school — no registration implied."},
-    {date:"Late Sep (TBC)", cat:"state", title:"Beal High School open evening", desc:"Not yet published for 2026 — check bealhighschool.co.uk; last year's was late September."},
-    {date:"Late Sep–early Oct (TBC)", cat:"state", title:"Woodbridge High School tours", desc:"Not yet published for 2026 — check the school website; booking required."},
-    {date:"Early Oct (TBC)", cat:"state", title:"Wanstead High &amp; Chingford Foundation open evenings", desc:"Not yet published for 2026 — both usually run in early October, check each school's website."},
+    {date:"Thu 25 Sep '26", cat:"state", title:"Beal High School Year 6 Open Evening", desc:"Confirmed, 4:00–6:30pm. Technically this year's Year 6 cohort's event, but open to visit informally."},
+    {date:"Sat 26 Sep '26", cat:"private", title:"Chigwell School open morning", desc:"Confirmed, 8:45am–1:00pm. Worth attending informally even a year early — no registration implied."},
+    {date:"Mon 28 &amp; Tue 29 Sep '26", cat:"state", title:"Woodbridge High guided tours", desc:"8:45am, booking open now. More dates (30 Sep, 5 &amp; 6 Oct) open for booking from 17 Sep."},
+    {date:"Thu 1 Oct '26", cat:"state", title:"Wanstead High Year 7 Open Evening", desc:"Confirmed, 5:00–7:30pm — the closest school to home, easy one to prioritise."},
     {date:"Mon 5 Oct '26", cat:"private", title:"Forest School Sixth Form Open Evening", desc:"Aimed at Year 11 leavers, but useful if you want a second look at the school this term."},
+    {date:"Mon 5 &amp; Tue 6 Oct '26", cat:"state", title:"Woodbridge High further tours", desc:"8:45am (plus a 5:00pm slot on the 5th) — bookable from 17 Sep."},
     {date:"Sat 3 Oct '26", cat:"private", title:"Bancroft's whole-school open event", desc:"Optional early visit."},
+    {date:"Early Oct (TBC)", cat:"state", title:"Chingford Foundation open evening", desc:"Not yet published for 2026 — last year's was Thu 2 Oct; check chingfordfoundation.org."},
     {date:"Thu 8 Oct '26", cat:"state", title:"Trinity Catholic open morning", desc:"Optional early visit, Upper Site."},
     {date:"Wed 14 Oct &amp; Thu 5 Nov '26", cat:"private", title:"Forest School 'Senior School in Action' mornings", desc:"9:00–11:00am — tour with staff or pupils and see a normal school day, a good low-key alternative to the main open morning."},
     {date:"Sep–Dec '26", cat:"private", title:"Forest Experience Tours", desc:"Small-group tours during the school day, running right through the Michaelmas term — book via forest.org.uk if the big open morning doesn't suit."},
@@ -971,6 +999,7 @@ function openModal(id){
       <span class="tag ${s.cat}">${labelFor(s.cat)}</span>
       <h3>${s.name}</h3>
       <div class="sub">${s.tagline}</div>
+      <a class="modal-website-link" href="${s.website}" target="_blank" rel="noopener noreferrer">Visit school website ↗</a>
     </div>
     <div class="modal-body">
       <div class="field two-col">
@@ -1094,6 +1123,7 @@ function initMapIfNeeded(){
       <span class="popup-tag ${s.cat}">${labelFor(s.cat)}</span>
       <div class="popup-name">${s.name}</div>
       <div class="popup-addr">${s.address}<br>${s.distance}</div>
+      <a href="${s.website}" target="_blank" rel="noopener noreferrer" style="font-size:11.5px;">${s.website.replace(/^https?:\/\//,'').replace(/\/$/,'')} ↗</a><br>
       <div class="popup-hint">See the Schools tab for open days, fees &amp; Ofsted detail</div>
     `);
   });
