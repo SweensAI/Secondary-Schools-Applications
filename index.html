@@ -354,6 +354,36 @@
     transition:opacity .15s ease;
   }
   .modal-website-link:hover{opacity:0.8;}
+
+  .advance-callout{
+    background:var(--private-tint);
+    border:2px solid var(--private);
+    border-radius:14px;
+    padding:20px 22px;
+    margin-bottom:24px;
+  }
+  .advance-callout-title{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:16px;
+    color:var(--private);
+    margin-bottom:10px;
+  }
+  .advance-callout .field{margin-bottom:12px;}
+  .advance-callout .field:last-of-type{margin-bottom:14px;}
+  .advance-badge{
+    display:inline-block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    padding:3px 8px;
+    border-radius:20px;
+    background:var(--private);
+    color:#fff;
+    margin-left:6px;
+    vertical-align:middle;
+  }
   .modal-body{padding:22px 30px 30px;}
   .field{margin-bottom:18px;}
   .field .flabel{
@@ -375,6 +405,9 @@
     border-radius:20px;
     background:var(--paper-dim);
   }
+  .badge.booking-req{background:var(--state-tint); color:var(--state); font-weight:600;}
+  .badge.booking-walkin{background:var(--private-tint); color:var(--private); font-weight:600;}
+  .badge.booking-unknown{background:var(--grammar-tint); color:var(--grammar); font-weight:600;}
 
   /* ---------- PREP TIMELINE ---------- */
   #prep{background:var(--paper-dim); border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);}
@@ -587,7 +620,7 @@
     <h2 class="section-title">Getting ready for the tests</h2>
     <p class="section-sub">Working backwards from each exam date. Content overlaps heavily across all the tests — verbal and non-verbal reasoning, maths and English comprehension — so practice for one helps the others.</p>
     <div class="prep-alert">
-      <strong>Good news:</strong> since Jacob is only in Year 5, there's no rush. His Redbridge 11+ sitting is in <strong>September 2027</strong>, not this year — that's over a year away. This year is for visiting schools informally and getting a feel for fit; formal preparation doesn't need to start in earnest until Year 6.
+      <strong>Mostly good news:</strong> since Jacob is only in Year 5, there's no rush for the Redbridge 11+ (September 2027) or the standard independent exams (Year 6, autumn 2027). This year is largely for visiting schools informally. <strong>One real exception:</strong> Forest School has just launched a new <strong>Advance Place (10+)</strong> route allowing Year 5 children to sit early and secure a Year 7 place a year ahead of schedule — registration closes <strong>18 November 2026</strong> and the assessment is <strong>17 December 2026</strong>. If that route interests you, it needs a decision soon; see Forest's pop-up in the Schools tab for full detail. Everything else can wait.
     </div>
     <div class="prep-grid" id="prepTrack"></div>
   </section>
@@ -685,6 +718,7 @@
 const SCHOOLS = [
   {
     id:"wanstead-high", cat:"state", name:"Wanstead High School",
+    bookingStatus:"Likely walk-in, not yet confirmed", bookingHow:"No booking form published as of our last check — the 2025 evening didn’t require one either. Worth a quick check of wansteadhigh.co.uk or a call to the office the week before, in case a form is added closer to the date.",
     website:"https://www.wansteadhigh.co.uk/",
     tagline:"Community co-ed · 11–19 · Est. 1924",
     address:"Redbridge Lane West, Wanstead, E11 2JZ",
@@ -699,6 +733,7 @@ const SCHOOLS = [
   },
   {
     id:"trinity", cat:"state", name:"Trinity Catholic High School",
+    bookingStatus:"Booking required", bookingHow:"Register via the link on the school\u2019s Year 7 page (tchs.org.uk/year-7) \u2014 a 'Register' link sits directly under the open morning date.",
     website:"https://www.tchs.org.uk/",
     tagline:"Voluntary-aided Catholic co-ed · 11–18",
     address:"Mornington Road, Woodford Green, IG8 0TP",
@@ -713,6 +748,7 @@ const SCHOOLS = [
   },
   {
     id:"woodbridge", cat:"state", name:"Woodbridge High School",
+    bookingStatus:"Booking required", bookingHow:"Book via woodbridgehigh.co.uk — the webinar and guided tour slots (28–30 Sep, 5–6 Oct) are booked individually; some slots only opened for booking from 17 September.",
     website:"https://www.woodbridgehigh.co.uk/",
     tagline:"Community co-ed · 11–18 · Languages, Business &amp; Enterprise College",
     address:"St Barnabas Road, Woodford Green, IG8 7DQ",
@@ -727,6 +763,7 @@ const SCHOOLS = [
   },
   {
     id:"beal", cat:"state", name:"Beal High School",
+    bookingStatus:"Likely walk-in, not yet confirmed", bookingHow:"No booking form published as of our last check. Worth confirming on bealhighschool.co.uk or by phone nearer the date in case one is added.",
     website:"https://www.bealhighschool.co.uk/",
     tagline:"Academy co-ed · lead school, Beacon Multi-Academy Trust",
     address:"Woodford Bridge Road, Ilford, IG4 5LP",
@@ -741,6 +778,7 @@ const SCHOOLS = [
   },
   {
     id:"chingford", cat:"state", name:"Chingford Foundation School",
+    bookingStatus:"Not yet known", bookingHow:"Date itself isn’t published yet — booking details will follow once it is. Check chingfordfoundation.org.",
     website:"https://www.chingfordfoundation.org/",
     tagline:"Foundation co-ed · 11–18 · Humanities College",
     address:"Nevin Drive, Chingford, E4 7LT (Waltham Forest)",
@@ -755,6 +793,7 @@ const SCHOOLS = [
   },
   {
     id:"ichs", cat:"grammar", name:"Ilford County High School",
+    bookingStatus:"N/A for Jacob’s cycle", bookingHow:"This year’s open evening (for the current Year 6 cohort) isn’t directly relevant — Jacob’s equivalent event will likely be around April 2027, closer to his own 11+ registration window.",
     website:"https://ichs.org.uk/",
     tagline:"Selective boys' grammar (state) · 11–18",
     address:"Fremantle Road, Barkingside, Ilford, IG6 2JB",
@@ -776,6 +815,7 @@ const SCHOOLS = [
   },
   {
     id:"coopers", cat:"grammar", name:"Coopers' Company &amp; Coborn School",
+    bookingStatus:"Booking required (when published)", bookingHow:"Past open evenings have had no alternative dates and required no separate booking beyond turning up, but this may vary — check cooperscoborn.org.uk once the 2026 date is announced.",
     website:"https://www.cooperscoborn.org.uk/",
     tagline:"Non-selective co-ed (despite grammar-style reputation) · 11–18",
     address:"St Mary's Lane, Upminster, RM14 3HS (Havering)",
@@ -790,6 +830,7 @@ const SCHOOLS = [
   },
   {
     id:"chigwell", cat:"private", name:"Chigwell School",
+    bookingStatus:"Booking required", bookingHow:"Book via chigwell-school.org — open mornings at Chigwell are ticketed events and tend to fill up, so booking ahead of 26 September is worthwhile.",
     website:"https://www.chigwell-school.org/",
     tagline:"Independent co-ed · 4–18 · ISI Excellent",
     address:"High Road, Chigwell, Essex IG7 6QF",
@@ -816,7 +857,9 @@ const SCHOOLS = [
   },
   {
     id:"forest", cat:"private", name:"Forest School",
+    bookingStatus:"Booking required", bookingHow:"Book via forest.org.uk/admissions-overview/admissions-events — you\u2019ve already registered for the 19 September Open Morning.",
     website:"https://www.forest.org.uk/",
+    applyUrl:"https://www.forest.org.uk/admissions-overview/11-entry/",
     tagline:"Independent co-ed · 4–18 · Edge of Epping Forest",
     address:"College Place, Snaresbrook, E17 3PY",
     distance:"~1–2 miles west of Wanstead — closest independent (near Snaresbrook Underground)",
@@ -824,24 +867,35 @@ const SCHOOLS = [
     ofstedNote:"HMC/IAPS all-through school, ~1,500 pupils.",
     results:"77.8% of GCSE entries at grades 9–7 · 80% of A-levels at A*–B.",
     ethos:"Strong outdoor-learning tradition and nurturing pastoral ethos, set on the edge of Epping Forest.",
-    openDay:"Confirmed: whole-school Open Morning Saturday 19 September 2026. Sixth Form Open Evening Monday 5 October 2026. Senior School in Action Mornings Wednesday 14 October &amp; Thursday 5 November 2026, 9:00–11:00am. Group tours (Forest Experience Tours) run September–December, bookable via forest.org.uk.",
-    deadline:"Direct application to the school (forest.org.uk)",
+    openDay:"Confirmed: whole-school Open Morning Saturday 19 September 2026. Sixth Form Open Evening Monday 5 October 2026. Senior School in Action Mornings Wednesday 14 October &amp; Thursday 5 November 2026, 9:00–11:00am. Group tours (Forest Experience Tours) run October–December, bookable via forest.org.uk.",
+    deadline:"Direct application to the school via the online Senior School Registration form (see the 11+ Entry page linked below)",
+    advancePlace:{
+      whatIsIt:"New for this cycle (page went live ~24 Sept 2026): <strong>Forest Advance Place</strong>, a <strong>10+</strong> route that lets a Year 5 child sit for their Year 7 place a full year early. Jacob is in Year 5 right now, so this is directly relevant \u2014 for <strong>September 2028 entry</strong>, exactly his intended cohort.",
+      howItWorks:"Sit the assessment this December as a Year 5 pupil. If successful, the place is secured and held \u2014 Jacob would stay at his current school as normal and simply join Forest in Year 7 at the usual time, no re-testing needed. If unsuccessful (or you'd rather wait), nothing is lost: he's still warmly invited to sit the standard 11+ in Year 6 next year, assessed entirely afresh, as if the early attempt never happened.",
+      whoCanApply:"Open to any Year 5 child at a state primary or independent prep school. The school explicitly says no tutoring is expected or needed.",
+      assessment:"Same format as the standard 11+: a 1hr10 digital Quest assessment (Maths, English, Verbal &amp; Non-Verbal Reasoning, Puzzles &amp; Problem Solving), a 30-min written English task, a group/collaborative activity, a school reference, and a January interview.",
+      howToApply:"Complete the online 10+ Senior School Registration Form by <strong>midday Wednesday 18 November 2026</strong>, with a non-refundable \u00a3180 registration fee (\u00a3240 overseas).",
+      keyDates:"Forest Experience Tours: Oct\u2013Dec 2026 &middot; Registration deadline: midday Wed 18 Nov 2026 &middot; School reference deadline: Fri 27 Nov 2026 &middot; Bursary application deadline: Fri 11 Dec 2026 &middot; <strong>Assessment day: Thursday 17 December 2026</strong> &middot; Interviews: w/c Mon 18 Jan 2027 &middot; Offers emailed: February 2027 &middot; Acceptance deadline: 10am Fri 5 March 2027.",
+      applyUrl:"https://www.forest.org.uk/admissions-overview/10-entry/"
+    },
     fees:{
       tuition:"\u00a310,898 per term inc. VAT (Years 7–13; \u00a38,790 before VAT), includes obligatory \u00a3350/term lunch charge",
       registration:"\u00a3180 (\u00a3240 overseas)",
       deposit:"\u00a31,400 payable on acceptance",
-      bursaries:"Means-tested support and hardship funds (up to ~2 places reserved for sudden income loss); academic, music, art, sport and drama scholarships. Sibling/clergy reductions of 5%."
+      bursaries:"Means-tested support and hardship funds (up to ~2 places reserved for sudden income loss); academic, music, art, sport and drama scholarships \u2014 separate Non-Academic Scholarship form due ~20 Nov, Bursary Application form due ~11 Dec (2026 cycle dates \u2014 expect ~1 year later for Jacob). Sibling/clergy reductions of 5%.",
+      scholarshipNote:"11+ 2027 cycle scholarship assessments (for reference): Art &amp; Design Wed 2 Dec 2026, Sport Thu 3 Dec 2026, Drama Fri 4 Dec 2026; academic scholarship and shortlisted assessments run w/c 18 Jan 2027."
     },
     examInfo:{
-      board:"Two-part: ~1hr10 digital test (Maths, English, Verbal &amp; Non-Verbal Reasoning, Puzzles) + 30-min paper-based written English",
-      testDate:"Assessment days historically mid-December — expect ~December 2027 for Jacob's cycle",
-      regWindow:"Expect online registration to close ~mid-November 2027 (2026's deadline was Wed 18 Nov, for reference)",
-      passMark:"No formal published cut-off; indicative competitive range ~110–115. ~140 Year 7 places.",
-      resultsOut:null
+      board:"Four-part selection: Entrance Assessment Test, Interview, School Reference, and a Collaborative Task. The written test itself is in two parts \u2014 a ~1hr10 digital test (Maths, English, Verbal &amp; Non-Verbal Reasoning, Puzzles &amp; Problem Solving) plus a 30-min paper-based written English assessment.",
+      testDate:"Confirmed for the current (2027 entry) cycle: Thursday 17 December 2026. Expect the equivalent date for Jacob's cycle to fall around mid-December 2027.",
+      regWindow:"Online Senior School Registration form due by midday Wednesday 18 November 2026 (this cycle) \u2014 expect a similar mid-November deadline a year later for Jacob, plus a \u00a3180 (\u00a3240 overseas) registration fee. School Reference form due ~27 Nov 2026.",
+      passMark:"No formal published cut-off; indicative competitive range ~110\u2013115. ~120 places available across 8 classes each September.",
+      resultsOut:"This cycle: offers emailed Thursday 11 February 2027; Taster Mornings &amp; Parent Q&amp;A for offer holders 24 Feb\u20133 Mar 2027; acceptance deadline 10am Friday 5 March 2027. Expect equivalent dates roughly a year later for Jacob."
     }
   },
   {
     id:"bancrofts", cat:"private", name:"Bancroft's School",
+    bookingStatus:"Booking required", bookingHow:"Book via bancrofts.org/admissions/open-days — places for the 3 October Senior School Open Morning are limited, so book ahead rather than turning up on the day.",
     website:"https://www.bancrofts.org/",
     tagline:"Independent co-ed · 7–18 · Founded 1737, Drapers' Company",
     address:"611–627 High Road, Woodford Green, IG8 0RF",
@@ -882,8 +936,17 @@ const TIMELINE = [
     {date:"Early Oct (TBC)", cat:"state", title:"Chingford Foundation open evening", desc:"Not yet published for 2026 — last year's was Thu 2 Oct; check chingfordfoundation.org."},
     {date:"Thu 8 Oct '26", cat:"state", title:"Trinity Catholic open morning", desc:"Optional early visit, Upper Site."},
     {date:"Wed 14 Oct &amp; Thu 5 Nov '26", cat:"private", title:"Forest School 'Senior School in Action' mornings", desc:"9:00–11:00am — tour with staff or pupils and see a normal school day, a good low-key alternative to the main open morning."},
-    {date:"Sep–Dec '26", cat:"private", title:"Forest Experience Tours", desc:"Small-group tours during the school day, running right through the Michaelmas term — book via forest.org.uk if the big open morning doesn't suit."},
-    {date:"Nov '26", cat:"private", title:"Forest &amp; independent registration deadlines (this year's cohort)", desc:"Not relevant to Jacob — these apply to the current Year 6 group applying for Sept 2027 entry."}
+    {date:"Sep–Dec '26", cat:"private", title:"Forest Experience Tours", desc:"Small-group tours during the school day, running right through the Michaelmas term — book via forest.org.uk if the big open morning doesn't suit."}
+  ]},
+  {month:"⚡ Forest Advance Place (10+) — a live decision for Jacob now", items:[
+    {date:"Oct–Dec '26", cat:"private", title:"Forest Experience Tours (also counts toward Advance Place)", desc:"Worth doing before applying, per the school's own advice."},
+    {date:"Wed 18 Nov '26 — midday", cat:"deadline", title:"10+ Advance Place registration deadline", desc:"Complete the online 10+ Senior School Registration Form, plus a non-refundable \u00a3180 fee (\u00a3240 overseas). This is the real decision point \u2014 if pursuing this route, it needs action soon."},
+    {date:"Fri 27 Nov '26", cat:"deadline", title:"School reference deadline", desc:"Forest requests a reference from Jacob's current school as part of the Advance Place process."},
+    {date:"Fri 11 Dec '26", cat:"deadline", title:"Bursary application deadline", desc:"If means-tested support will be needed, the bursary form is due here \u2014 earlier than the assessment day itself."},
+    {date:"Thu 17 Dec '26", cat:"private", title:"Advance Place assessment day", desc:"Same format as the standard 11+: 1hr10 digital Quest test (Maths, English, VR, NVR, Puzzles), 30-min written English, a group/collaborative task, plus the school reference already submitted."},
+    {date:"w/c Mon 18 Jan '27", cat:"private", title:"Interviews", desc:"A friendly individual conversation \u2014 the school is explicit that being genuinely themselves matters more than polish."},
+    {date:"Feb '27", cat:"private", title:"Offers emailed", desc:"If successful, Jacob's Year 7 place (Sept 2028) is secured there and then \u2014 no further testing needed."},
+    {date:"10am, Fri 5 Mar '27", cat:"deadline", title:"Acceptance deadline", desc:"If not pursuing the place, or unsuccessful, nothing is lost \u2014 the standard 11+ in Year 6 (autumn 2027) remains fully open, assessed fresh."}
   ]},
   {month:"Year 5, spring–summer 2027", items:[
     {date:"May–Jun 2027", cat:"grammar", title:"Redbridge 11+ registration opens", desc:"Jacob registers for the Ilford County High selection test in his final term of Year 5, if pursuing the grammar route."}
@@ -897,12 +960,12 @@ const TIMELINE = [
     {date:"~31 Oct 2027", cat:"deadline", title:"Common application form deadline", desc:"Redbridge / Waltham Forest / Havering — name up to 6 schools in preference order, including ICHS if 11+ registered. Exact date confirmed closer to the time."}
   ]},
   {month:"November 2027", items:[
-    {date:"~Mid-Nov 2027", cat:"deadline", title:"Forest School registration closes", desc:"Expect a similar window to the 2026 cycle (18 November)."},
+    {date:"~18 Nov 2027 (est.)", cat:"deadline", title:"Forest School registration closes", desc:"Confirmed for the current cycle as midday Wed 18 Nov 2026 (fee \u00a3180/\u00a3240 overseas) \u2014 expect a similar date a year later for Jacob. School Reference form due ~9 days after."},
     {date:"~Late Nov 2027", cat:"deadline", title:"Chigwell School 11+ registration closes", desc:"Expect a similar window to the 2026 cycle (25 November)."}
   ]},
   {month:"December 2027", items:[
     {date:"~Early Dec 2027", cat:"deadline", title:"Bancroft's registration deadline", desc:"Expect a similar window to the 2026 cycle (1 December)."},
-    {date:"~Mid-Dec 2027", cat:"private", title:"Forest School assessment days", desc:"Expect similar timing to the 2026 cycle."}
+    {date:"~17 Dec 2027 (est.)", cat:"private", title:"Forest School 11+ Entrance Exam Day", desc:"Confirmed for the current cycle as Thu 17 Dec 2026 \u2014 expect Jacob's sitting a year later, around mid-December 2027. Selection also includes an interview, school reference and collaborative task."}
   ]},
   {month:"January 2028", items:[
     {date:"~Early Jan 2028", cat:"private", title:"Bancroft's on-site assessments", desc:"CEM Select test + English/maths papers, interviews follow for strong performers."},
@@ -979,14 +1042,18 @@ function renderCards(){
   const groups = {state:'grid-state', grammar:'grid-grammar', private:'grid-private'};
   Object.keys(groups).forEach(cat=>{
     const el = document.getElementById(groups[cat]);
-    el.innerHTML = SCHOOLS.filter(s=>s.cat===cat).map(s => `
+    el.innerHTML = SCHOOLS.filter(s=>s.cat===cat).map(s => {
+      const bClass = s.bookingStatus.includes('Booking required') ? 'booking-req' : (s.bookingStatus.includes('walk-in') ? 'booking-walkin' : 'booking-unknown');
+      return `
       <div class="card ${s.cat}" onclick="openModal('${s.id}')">
-        <h4>${s.name}</h4>
+        <h4>${s.name}${s.advancePlace ? '<span class="advance-badge">New: 10+ route</span>' : ''}</h4>
         <div class="meta">${s.tagline}<br>${s.distance}</div>
         <span class="ofsted-chip">${s.ofsted.split('(')[0].trim()}</span>
+        <span class="badge ${bClass}" style="margin-left:6px;">${s.bookingStatus}</span>
         <div class="tap-hint">tap for details →</div>
       </div>
-    `).join('');
+    `;
+    }).join('');
   });
 }
 
@@ -1002,6 +1069,18 @@ function openModal(id){
       <a class="modal-website-link" href="${s.website}" target="_blank" rel="noopener noreferrer">Visit school website ↗</a>
     </div>
     <div class="modal-body">
+      ${s.advancePlace ? `
+      <div class="advance-callout">
+        <div class="advance-callout-title">⚡ New: Forest Advance Place (10+) — relevant to Jacob now</div>
+        <div class="fval" style="margin-bottom:10px;">${s.advancePlace.whatIsIt}</div>
+        <div class="field"><div class="flabel">How it works</div><div class="fval">${s.advancePlace.howItWorks}</div></div>
+        <div class="field"><div class="flabel">Who can apply</div><div class="fval">${s.advancePlace.whoCanApply}</div></div>
+        <div class="field"><div class="flabel">Assessment</div><div class="fval">${s.advancePlace.assessment}</div></div>
+        <div class="field"><div class="flabel">How to apply</div><div class="fval">${s.advancePlace.howToApply}</div></div>
+        <div class="field"><div class="flabel">Key dates</div><div class="fval">${s.advancePlace.keyDates}</div></div>
+        <a href="${s.advancePlace.applyUrl}" target="_blank" rel="noopener noreferrer" class="modal-website-link" style="background:var(--private);">Go to 10+ Advance Place page ↗</a>
+      </div>` : ''}
+
       <div class="field two-col">
         <div>
           <div class="flabel">Address</div>
@@ -1036,6 +1115,7 @@ function openModal(id){
           <strong>Registration:</strong> ${s.fees.registration}<br>
           <strong>Deposit:</strong> ${s.fees.deposit}<br>
           <strong>Bursaries/scholarships:</strong> ${s.fees.bursaries}
+          ${s.fees.scholarshipNote ? `<br><strong>Scholarship assessment dates:</strong> ${s.fees.scholarshipNote}` : ''}
         </div>
       </div>` : ''}
 
@@ -1057,8 +1137,13 @@ function openModal(id){
       </div>
 
       <div class="field">
+        <div class="flabel">Booking</div>
+        <div class="fval"><span class="badge booking-${s.bookingStatus.includes('Booking required') ? 'req' : (s.bookingStatus.includes('walk-in') ? 'walkin' : 'unknown')}">${s.bookingStatus}</span><br>${s.bookingHow}</div>
+      </div>
+
+      <div class="field">
         <div class="flabel">How to apply</div>
-        <div class="fval">${s.deadline}</div>
+        <div class="fval">${s.deadline}${s.applyUrl ? `<br><a href="${s.applyUrl}" target="_blank" rel="noopener noreferrer" class="modal-website-link" style="margin-top:8px;">Go to admissions/apply page ↗</a>` : ''}</div>
       </div>
     </div>
   `;
